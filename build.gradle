@@ -67,11 +67,3 @@ jlink {
 jlinkZip {
     group = 'distribution'
 }
-shadowJar {
-    archiveBaseName.set('demon-1.0-SNAPSHOT.jar')
-    archiveVersion.set('1.0.0')
-    mergeServiceFiles()
-    manifest {
-        attributes 'Main-Class': 'com.kyrsach.demon.Main'
-    }
-}
