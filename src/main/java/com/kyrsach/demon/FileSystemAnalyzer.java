@@ -8,12 +8,32 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileOwnerAttributeView;
 import java.nio.file.attribute.FileTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 public class FileSystemAnalyzer {
 
     private static final Logger LOGGER = Logger.getLogger(FileSystemAnalyzer.class.getName());
+
+    // Статический блок для настройки логгера
+    static {
+        try {
+            // Создание обработчика файла для логирования
+            FileHandler fileHandler = new FileHandler("logs/filesystem_analyzer.log", true);
+            fileHandler.setFormatter(new SimpleFormatter()); // Установка простого форматирования логов
+            LOGGER.addHandler(fileHandler); // Добавляем обработчик к логгеру
+            LOGGER.setLevel(Level.ALL); // Устанавливаем уровень логирования (ALL для всех сообщений)
+
+            // Отключаем логирование в консоль (опционально)
+            Logger rootLogger = Logger.getLogger("");
+            Handler[] handlers = rootLogger.getHandlers();
+            if (handlers.length > 0) {
+                rootLogger.removeHandler(handlers[0]); // Убираем консольный обработчик
+            }
+
+        } catch (IOException e) {
+            System.err.println("Failed to initialize log handler: " + e.getMessage());
+        }
+    }
 
     public TreeItem<FileInfo> analyzeDirectory(File directory) {
         LOGGER.log(Level.INFO, "Starting analysis of directory: {0}", directory.getAbsolutePath());
